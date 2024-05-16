@@ -1,0 +1,7 @@
+%dw 2.0
+
+type auto_9196bb86_3573_4279_bba7_6b5bf5087413_Output_Payload = {|
+  transactionId: String, 
+  destinationLocation: String
+|}
+

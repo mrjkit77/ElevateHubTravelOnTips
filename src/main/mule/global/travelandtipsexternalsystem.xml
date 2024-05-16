@@ -1,13 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="travelandtipsexternalsystemFlow" doc:id="076e1f30-8dea-4bc4-b122-f2c43012b3ab" >
 		<http:listener doc:name="Listener" doc:id="89317a91-ffce-46d1-8a98-c9b5f6b1f351" config-ref="HTTP_Listener_config" path="${http.listner.path}"/>
-		<logger level="INFO" doc:name="Logger" doc:id="1956dcc8-e724-45f5-bb36-08618f3d0ae9" message="requestSentRoutesTravelOnTipsExternalFile"/>
-		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="42d38216-d99d-4bb7-9bb3-55db9f831848" />
-		<logger level="INFO" doc:name="Logger" doc:id="bffbce77-208e-49f1-a67c-3bf223c62a67" message="responseSentforTravelOnTipsExternalsystem"/>
+		<ee:transform doc:name="Transform Message" doc:id="6adb59cf-b60c-4923-832e-5fd818a83d67" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="serviceType" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.uriParams.serviceType]]></ee:set-variable>
+				<ee:set-variable variableName="transactionId" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.transactionId]]></ee:set-variable>
+				<ee:set-variable variableName="URL" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.headers.requestUri]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1956dcc8-e724-45f5-bb36-08618f3d0ae9" message="requestSentRoutesTravelOnTipsExternalFile #[vars.transactionId]" />
+		<choice doc:name="Choice" doc:id="506a52e6-95d0-4182-ad58-8aeeed4d54d0" >
+			<when expression='#[vars.serviceType == "routes"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="f70bd486-dad9-453b-b270-c46c2c098217" message='#["getRoutesExternal system call"]'/>
+				<flow-ref doc:name="Flow Reference" doc:id="32102947-8a0e-430d-b224-27f85416ea2e" name="getRoutesTravelOnTipsFlow"/>
+			</when>
+			<when expression='#[vars.serviceType == "schedule"]'>
+				<logger level="INFO" doc:name="Logger" doc:id="3d458339-87ff-4f47-bb8d-575cd2d290ab" message='#["getschedule external system "]'/>
+				<flow-ref doc:name="Flow Reference" doc:id="4382ce48-346e-431c-875d-c9b36359e84e" name="getScheduleTravelOnTipsFlow"/>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="42fac56b-1ca2-48eb-9807-ae3af721a4a8" message='#["invalid service type"]'/>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="58a5d6f9-1e01-47a5-a814-e2b6a15fd46c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+
+{
+"O-location": payload.destinationLocation,
+"ID": payload.transactionId,
+"URL": vars.URL as String ++ vars.transactionId as String ++ vars.serviceType as String
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="bffbce77-208e-49f1-a67c-3bf223c62a67" message="#[payload]"/>
 	</flow>
 </mule>
