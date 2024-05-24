@@ -8,5 +8,6 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b260773f-d0db-4386-a976-4f525b4c2a68" >
 		<http:listener-connection host="${http.listner.host}" port="${http.listner.port}" readTimeout="3000"/>
 	</http:listener-config>
-	<configuration-properties doc:name="Configuration properties" doc:id="2291360f-ce54-4148-be18-47d4dcc180ed" file="config\local.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="2291360f-ce54-4148-be18-47d4dcc180ed" file='config/${env}.yaml' />
+	<global-property doc:name="Global Property" doc:id="73c58d4b-a364-4ab5-8b26-863902a3f9bb" name="env" value="local" />
 </mule>
