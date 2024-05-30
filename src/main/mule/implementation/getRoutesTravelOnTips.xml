@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="getRoutesTravelOnTipsFlow" doc:id="ed58b6ec-b7ac-4ec0-808a-7d0624feb7e5" >
+		<set-payload value='#[{&#10;"transactionId": "hgghghh-shfgsjk-ROUTES",&#10;"destinationLocation": "BEN-SG"	,&#10;"originLocation": "KLG-MY"&#10;}]' doc:name="Set Payload" doc:id="5907f06e-e1e6-45e4-ba4a-6310b4cb209e" />
+	</flow>
+</mule>

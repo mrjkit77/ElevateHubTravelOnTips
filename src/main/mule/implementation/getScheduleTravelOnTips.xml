@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="getScheduleTravelOnTipsFlow" doc:id="9196bb86-3573-4279-bba7-6b5bf5087413" >
+		<set-payload value='#[{&#10;"transactionId": "hgghghh-shfgsjk-schedule",&#10;"destinationLocation": "KLG-MY",&#10;"originLocation": "BEN-SG"	&#10;}]' doc:name="Set Payload" doc:id="891ce8b1-dad3-4f6c-b2c7-8d9077d560bd" />
+	</flow>
+</mule>
